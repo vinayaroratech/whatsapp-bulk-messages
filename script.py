@@ -1,40 +1,55 @@
-# Program to send bulk messages through WhatsApp web from an excel sheet without saving contact numbers
+# Program to send bulk customized message through WhatsApp web application
 # Author @inforkgodara
 
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-from webdriver_manager.chrome import ChromeDriverManager
-from time import sleep
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import NoSuchElementException
 import pandas
+import time
 
-excel_data = pandas.read_excel('Recipients data.xlsx', sheet_name='Recipients')
-
+# Load the chrome driver
+driver = webdriver.Chrome()
 count = 0
 
-driver = webdriver.Chrome(ChromeDriverManager().install())
-driver.get('https://web.whatsapp.com')
-input("Press ENTER after login into Whatsapp Web and your chats are visiable.")
+# Open WhatsApp URL in chrome browser
+driver.get("https://web.whatsapp.com/")
+wait = WebDriverWait(driver, 20)
+
+# Read data from excel
+excel_data = pandas.read_excel('Recipients data.xlsx', sheet_name='Recipients')
+
+# Iterate excel rows till to finish
 for column in excel_data['Contact'].tolist():
+    # Assign customized message
+    message = excel_data['Message'][0]
+
+    # Locate search box through x_path
+    search_box = '//*[@id="side"]/div[1]/div/label/div/div[2]'
+    person_title = wait.until(lambda driver:driver.find_element_by_xpath(search_box))
+
+    # Clear search box if any contact number is written in it
+    person_title.clear()
+
+    # Send contact number in search box
+    person_title.send_keys(str(excel_data['Contact'][count]))
+    count = count + 1
+
+    # Wait for 2 seconds to search contact number
+    time.sleep(2)
+
     try:
-        url = 'https://web.whatsapp.com/send?phone=' + str(excel_data['Contact'][count]) + '&text=' + excel_data['Message'][0]
-        sent = False
-        # It tries 3 times to send a message in case if there any error occurred
-        driver.get(url)
-        try:
-            click_btn = WebDriverWait(driver, 35).until(
-                EC.element_to_be_clickable((By.CLASS_NAME, '_4sWnG')))
-        except Exception as e:
-            print("Sorry message could not sent to " + str(excel_data['Contact'][count]))
-        else:
-            sleep(2)
-            click_btn.click()
-            sent = True
-            sleep(5)
-            print('Message sent to: ' + str(excel_data['Contact'][count]))
-        count = count + 1
-    except Exception as e:
-        print('Failed to send message to ' + str(excel_data['Contact'][count]) + str(e))
+        # Load error message in case unavailability of contact number
+        element = driver.find_element_by_xpath('//*[@id="pane-side"]/div[1]/div/span')
+    except NoSuchElementException:
+        # Format the message from excel sheet
+        message = message.replace('{customer_name}', 'sir/mam')
+        person_title.send_keys(Keys.ENTER)
+        actions = ActionChains(driver)
+        actions.send_keys(message)
+        actions.send_keys(Keys.ENTER)
+        actions.perform()
+
+# Close chrome browser
 driver.quit()
-print("The script executed successfully.")
