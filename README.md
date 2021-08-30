@@ -1,7 +1,13 @@
 # WhatsApp Bulk Messages - Bot to send bulk whatsapp messages
 It is a python script that sends WhatsApp message automatically from WhatsApp web application without saved contact numbers. It can be configured to send advertising messages to recipients. It read data from an excel sheet and send a configured message to people.
 
+## Prerequisites
+
+In order to run the python script, your system must have the following programs/packages installed and the contact number should be saved in your phone (You can use bulk contact number saving procedure of email). There is a way without saving the contact number but has the limitation to send the attachment.
+
 ### Usage : 
+    python pip install -r requirements.txt
+    
     python script.py
 
 ### Dependencies
@@ -15,15 +21,9 @@ It is a python script that sends WhatsApp message automatically from WhatsApp we
 
 ### How to contribute
 All contributions are welcome, from code to documentation to bug reports. Please use GitHub to its fullest-- contribute Pull Requests, contribute tutorials or other wiki content-- whatever you have to offer, we can use it!
+
 ## Important Note
 * If this repository helped you to understand at least something new please give star this repository which motivates me to work further for the similar kinds for projects.
-
-## Prerequisites
-
-In order to run the python script, your system must have the following programs/packages installed and the contact number should be saved in your phone (You can use bulk contact number saving procedure of email). There is a way without saving the contact number but has the limitation to send the attachment.
-
-### Usage : 
-    python pip install -r requirements.txt
 
 ## Approach
 * First need to clone this respiratory
