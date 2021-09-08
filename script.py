@@ -1,5 +1,4 @@
 # Program to send bulk customized message through WhatsApp web application
-# Author @inforkgodara
 
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
