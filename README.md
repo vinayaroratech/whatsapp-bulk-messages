@@ -1,5 +1,5 @@
-# Google Search Automation - Bot to google search 
-It is a python script that sends search query to google.
+# Instagram Login Automation - Bot to login instagram 
+It is a python script that sends login credentials to instagram.
 
 ## Prerequisites
 

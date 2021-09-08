@@ -2,24 +2,44 @@
 
 # Author @vinaykarora
 from selenium import webdriver
+from config import USERNAME, PASSWORD
 import time
+
+users = ['vinaykarora']
 
 # Load the chrome driver
 driver = webdriver.Chrome()
 
-driver.get('https://www.google.com')
+driver.get('https://www.instagram.com/')
 
 time.sleep(2)
 
-search_input = driver.find_element_by_name('q')
-search_input.send_keys('hello world')
+username_field = driver.find_element_by_name('username')
+username_field.send_keys(USERNAME)
 
-time.sleep(2)
+password_field = driver.find_element_by_name('password')
+password_field.send_keys(PASSWORD)
 
-search_btn = driver.find_element_by_css_selector('input[type="submit"]')
-search_btn.click()
+login_btn = driver.find_element_by_css_selector('button[type="submit"]')
+login_btn.click()
 
-'''
-<input class="gLFyf gsfi" maxlength="2048" name="q" type="text" jsaction="paste:puy29d" aria-autocomplete="both" aria-haspopup="false" autocapitalize="off" autocomplete="off" autocorrect="off" autofocus="" role="combobox" spellcheck="false" title="Search" value="" aria-label="Search" data-ved="0ahUKEwiK0rzooIHrAhWk7XMBHZ7lBfIQ39UDCAQ">
-<input class="gNO89b" value="Google Search" aria-label="Google Search" name="btnK" type="submit" data-ved="0ahUKEwiK0rzooIHrAhWk7XMBHZ7lBfIQ4dUDCAs">
-'''
+time.sleep(5)
+
+for user in users:
+    driver.get(f"https://www.instagram.com/{user}/")
+
+    time.sleep(2)
+
+    number_of_posts, followers, following = driver.find_elements_by_css_selector(
+        '.g47SY')
+    # print('Number of Posts:', number_of_posts.text, 'Followers:',
+    #       followers.text, 'Following:', following.text)
+
+    bio = driver.find_element_by_css_selector('.-vDIg')
+    # print('Bio:', bio.text, sep='\n')
+
+    with open(f"{user}.txt", "w") as file:
+        file.write(
+            f"Number of Posts: {number_of_posts.text}\nFollowers: {followers.text}\nFollowing: {following.text}\n\nBio:\n{bio.text}")
+
+    time.sleep(1)
