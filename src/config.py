@@ -1,2 +1,2 @@
-USERNAME="vinaykarora"
-PASSWORD="123456"
+EMAIL="example@gmail.com"
+PASSWORD="12345567"

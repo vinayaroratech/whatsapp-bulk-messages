@@ -3,3 +3,4 @@ xlrd==2.0.1
 selenium==3.141.0
 webdriver-manager==3.4.2
 openpyxl==3.0.7
+pyperclip
